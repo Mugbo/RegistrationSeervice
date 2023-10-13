@@ -1,5 +1,6 @@
 package ie.atu.registrationservice;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,9 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegistrationController {
 
+    private final NotificationServiceClient notificationServiceClient;
+
+    @Autowired
+    public RegistrationController(NotificationServiceClient notificationServiceClient) {
+        this.notificationServiceClient = notificationServiceClient;
+    }
+
     @PostMapping("/confirm")
-    public String confirmUserDetails(@RequestBody UserDetails userDetails){
-        return String.format("Received User details for %s with email %s",
-                userDetails.getName(), userDetails.getEmail());
+    public String confirmUserRegister(@RequestBody UserDetails userDetails){
+        return notificationServiceClient.someDetails(userDetails);
+
     }
 }
